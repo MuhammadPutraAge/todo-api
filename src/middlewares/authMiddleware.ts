@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
 import asyncHandler from "./asyncHandler";
 import prisma from "../utils/db";
+import { verifyJwt } from "../utils/auth";
 
 const authMiddleware = asyncHandler(async (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -18,9 +18,7 @@ const authMiddleware = asyncHandler(async (req, res, next) => {
   }
 
   try {
-    const jwtSecret = process.env.JWT_SECRET || "";
-
-    const { userId } = jwt.verify(token, jwtSecret) as { userId: string };
+    const { userId } = verifyJwt(token);
     const user = await prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) {
