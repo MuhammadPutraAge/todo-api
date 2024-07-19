@@ -11,12 +11,7 @@ export const notFoundMiddleware = (
   next(error);
 };
 
-export const errorMiddleware = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const errorMiddleware = (err: Error, req: Request, res: Response) => {
   const statusCode = req.statusCode === 200 ? 500 : res.statusCode;
   const message = err.message;
 
